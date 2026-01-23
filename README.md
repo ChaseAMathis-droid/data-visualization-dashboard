@@ -2,6 +2,28 @@
 
 A modern, web-based interactive dashboard for visualizing complex datasets with executive-level insights. This dashboard provides comprehensive data analysis capabilities including multiple chart types, dynamic filtering, drill-down interactions, and calculated fields.
 
+## 🔗 Quick Access
+
+**To view the dashboard:**
+
+1. **Using GitHub Pages**: Visit the live demo at: `https://ChaseAMathis-droid.github.io/data-visualization-dashboard/`
+   
+2. **Locally**: 
+   - Download the repository and open `index.html` directly in your browser
+   - Or use the [Raw GitHub link](https://raw.githubusercontent.com/ChaseAMathis-droid/data-visualization-dashboard/main/index.html) (right-click → Save As → open the saved file)
+
+3. **Via Local Server** (recommended for best performance):
+   ```bash
+   # Clone the repository
+   git clone https://github.com/ChaseAMathis-droid/data-visualization-dashboard.git
+   cd data-visualization-dashboard
+   
+   # Start a web server
+   python -m http.server 8000
+   
+   # Open in browser: http://localhost:8000
+   ```
+
 ## ✨ Features
 
 ### 📈 Visualizations
