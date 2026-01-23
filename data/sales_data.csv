@@ -1,0 +1,37 @@
+date,category,product,sales,profit,region,units_sold
+2023-01-15,Electronics,Laptop,45000,12000,North,150
+2023-01-20,Electronics,Smartphone,32000,8000,South,200
+2023-01-25,Furniture,Desk,15000,4500,East,75
+2023-02-05,Electronics,Tablet,28000,7000,West,140
+2023-02-10,Furniture,Chair,12000,3600,North,120
+2023-02-15,Office Supplies,Printer,8000,2400,South,40
+2023-03-01,Electronics,Laptop,52000,14000,East,175
+2023-03-10,Furniture,Desk,18000,5400,West,90
+2023-03-15,Office Supplies,Paper,3000,1200,North,500
+2023-04-05,Electronics,Smartphone,38000,9500,South,225
+2023-04-12,Furniture,Chair,14000,4200,East,140
+2023-04-20,Office Supplies,Printer,9000,2700,West,45
+2023-05-08,Electronics,Tablet,31000,7750,North,155
+2023-05-15,Furniture,Desk,19000,5700,South,95
+2023-05-22,Office Supplies,Paper,3500,1400,East,550
+2023-06-03,Electronics,Laptop,48000,13000,West,160
+2023-06-10,Furniture,Chair,13500,4050,North,135
+2023-06-18,Office Supplies,Printer,8500,2550,South,42
+2023-07-02,Electronics,Smartphone,35000,8750,East,210
+2023-07-12,Furniture,Desk,17000,5100,West,85
+2023-07-20,Office Supplies,Paper,3200,1280,North,520
+2023-08-05,Electronics,Tablet,29000,7250,South,145
+2023-08-15,Furniture,Chair,15000,4500,East,150
+2023-08-25,Office Supplies,Printer,9500,2850,West,47
+2023-09-08,Electronics,Laptop,55000,15000,North,185
+2023-09-18,Furniture,Desk,20000,6000,South,100
+2023-09-25,Office Supplies,Paper,3800,1520,East,580
+2023-10-05,Electronics,Smartphone,40000,10000,West,240
+2023-10-15,Furniture,Chair,16000,4800,North,160
+2023-10-22,Office Supplies,Printer,10000,3000,South,50
+2023-11-03,Electronics,Tablet,33000,8250,East,165
+2023-11-12,Furniture,Desk,21000,6300,West,105
+2023-11-20,Office Supplies,Paper,4000,1600,North,600
+2023-12-05,Electronics,Laptop,60000,16500,South,200
+2023-12-15,Furniture,Chair,17000,5100,East,170
+2023-12-22,Office Supplies,Printer,11000,3300,West,55

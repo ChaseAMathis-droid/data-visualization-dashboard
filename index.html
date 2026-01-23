@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Data Visualization Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>📊 Executive Sales Dashboard</h1>
+            <p class="subtitle">Interactive Analytics & Performance Insights</p>
+        </header>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="dateFilter">Date Range:</label>
+                <select id="dateFilter" class="filter-select">
+                    <option value="all">All Dates</option>
+                    <option value="Q1">Q1 2023</option>
+                    <option value="Q2">Q2 2023</option>
+                    <option value="Q3">Q3 2023</option>
+                    <option value="Q4">Q4 2023</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="regionFilter">Region:</label>
+                <select id="regionFilter" class="filter-select">
+                    <option value="all">All Regions</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                    <option value="East">East</option>
+                    <option value="West">West</option>
+                </select>
+            </div>
+            <button id="resetFilters" class="reset-btn">Reset Filters</button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-section">
+            <div class="kpi-card">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-content">
+                    <h3>Total Sales</h3>
+                    <p class="kpi-value" id="totalSales">$0</p>
+                    <span class="kpi-trend" id="salesTrend">+0%</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📈</div>
+                <div class="kpi-content">
+                    <h3>Total Profit</h3>
+                    <p class="kpi-value" id="totalProfit">$0</p>
+                    <span class="kpi-trend" id="profitTrend">+0%</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-content">
+                    <h3>Units Sold</h3>
+                    <p class="kpi-value" id="totalUnits">0</p>
+                    <span class="kpi-trend" id="unitsTrend">+0%</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">💹</div>
+                <div class="kpi-content">
+                    <h3>Profit Margin</h3>
+                    <p class="kpi-value" id="profitMargin">0%</p>
+                    <span class="kpi-trend" id="marginTrend">+0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <!-- Sales Trend Line Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📈 Sales Trend Over Time</h3>
+                    <p class="chart-description">Monthly sales performance with drill-down capability</p>
+                </div>
+                <div id="lineChart" class="svg-chart"></div>
+            </div>
+
+            <!-- Category Bar Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📊 Sales by Category</h3>
+                    <p class="chart-description">Click bars to drill down into products</p>
+                </div>
+                <div id="barChart" class="svg-chart"></div>
+            </div>
+        </div>
+
+        <!-- Regional Heat Map and Additional Charts -->
+        <div class="charts-section">
+            <!-- Regional Heat Map -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>🗺️ Regional Performance Heat Map</h3>
+                    <p class="chart-description">Sales distribution across regions</p>
+                </div>
+                <div id="heatMap"></div>
+            </div>
+
+            <!-- Product Performance Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>🎯 Top Products by Profit</h3>
+                    <p class="chart-description">Product profitability analysis</p>
+                </div>
+                <div id="productChart" class="svg-chart"></div>
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="table-section">
+            <div class="chart-header">
+                <h3>📋 Detailed Data View</h3>
+                <p class="chart-description">Click rows to view details</p>
+            </div>
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Product</th>
+                            <th>Sales</th>
+                            <th>Profit</th>
+                            <th>Region</th>
+                            <th>Units</th>
+                            <th>Margin %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>Dashboard follows data visualization best practices | Optimized for executive decision-making</p>
+        </footer>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
