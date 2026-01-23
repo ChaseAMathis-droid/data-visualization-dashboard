@@ -26,7 +26,9 @@ data-visualization-dashboard/index.html
 ### Option 3: GitHub Pages (Live Demo)
 **URL:** `https://ChaseAMathis-droid.github.io/data-visualization-dashboard/`
 
-*Note: GitHub Pages needs to be enabled in repository settings for this to work.*
+This is the easiest way to view the dashboard - just click the link! The dashboard is automatically deployed to GitHub Pages whenever changes are pushed to the repository.
+
+*Note: It may take 1-2 minutes for changes to appear after pushing to GitHub.*
 
 ### Option 4: Local Web Server (Recommended for Development)
 If you have Python installed:

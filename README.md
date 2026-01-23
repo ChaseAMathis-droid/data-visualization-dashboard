@@ -6,13 +6,15 @@ A modern, web-based interactive dashboard for visualizing complex datasets with 
 
 **To view the dashboard:**
 
-1. **Using GitHub Pages**: Visit the live demo at: `https://ChaseAMathis-droid.github.io/data-visualization-dashboard/`
+1. **GitHub Pages (Live Demo)**: 
+   - **URL:** `https://ChaseAMathis-droid.github.io/data-visualization-dashboard/`
+   - Automatically deploys from this branch
    
 2. **Locally**: 
    - Download the repository and open `index.html` directly in your browser
-   - Or use the [Raw GitHub link](https://raw.githubusercontent.com/ChaseAMathis-droid/data-visualization-dashboard/main/index.html) (right-click → Save As → open the saved file)
+   - Or use the [Raw GitHub link](https://raw.githubusercontent.com/ChaseAMathis-droid/data-visualization-dashboard/copilot/build-tableau-dashboard/index.html) (right-click → Save As → open the saved file)
 
-3. **Via Local Server** (recommended for best performance):
+3. **Via Local Server** (recommended for development):
    ```bash
    # Clone the repository
    git clone https://github.com/ChaseAMathis-droid/data-visualization-dashboard.git
