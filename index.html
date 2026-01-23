@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Data Visualization Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -93,7 +91,7 @@
                     <h3>📈 Sales Trend Over Time</h3>
                     <p class="chart-description">Monthly sales performance with drill-down capability</p>
                 </div>
-                <canvas id="lineChart"></canvas>
+                <div id="lineChart" class="svg-chart"></div>
             </div>
 
             <!-- Category Bar Chart -->
@@ -102,7 +100,7 @@
                     <h3>📊 Sales by Category</h3>
                     <p class="chart-description">Click bars to drill down into products</p>
                 </div>
-                <canvas id="barChart"></canvas>
+                <div id="barChart" class="svg-chart"></div>
             </div>
         </div>
 
@@ -123,7 +121,7 @@
                     <h3>🎯 Top Products by Profit</h3>
                     <p class="chart-description">Product profitability analysis</p>
                 </div>
-                <canvas id="productChart"></canvas>
+                <div id="productChart" class="svg-chart"></div>
             </div>
         </div>
 

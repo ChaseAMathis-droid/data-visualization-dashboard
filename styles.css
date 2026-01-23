@@ -199,6 +199,40 @@ canvas {
     max-height: 400px;
 }
 
+.svg-chart {
+    width: 100%;
+    min-height: 300px;
+    position: relative;
+}
+
+.svg-chart svg {
+    width: 100%;
+    height: auto;
+}
+
+.chart-point, .chart-bar, .chart-segment {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.chart-point:hover, .chart-bar:hover, .chart-segment:hover {
+    opacity: 0.8;
+}
+
+.chart-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
 /* Heat Map */
 #heatMap {
     display: grid;

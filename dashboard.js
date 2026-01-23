@@ -1,9 +1,8 @@
 // Interactive Data Visualization Dashboard
-// Implements: filters, drill-down, tooltips, calculated fields, and best practices
+// Pure JavaScript implementation with SVG charts (no external dependencies)
 
 let rawData = [];
 let filteredData = [];
-let charts = {};
 
 // Load and initialize dashboard
 async function initDashboard() {
@@ -160,7 +159,7 @@ function updateTrendIndicator(elementId, trend) {
 
 // Update line chart - Sales trend over time
 function updateLineChart() {
-    const ctx = document.getElementById('lineChart').getContext('2d');
+    const container = document.getElementById('lineChart');
     
     // Group data by month
     const monthlyData = {};
@@ -177,85 +176,81 @@ function updateLineChart() {
     const salesData = months.map(m => monthlyData[m].sales);
     const profitData = months.map(m => monthlyData[m].profit);
     
-    if (charts.lineChart) {
-        charts.lineChart.destroy();
+    // Create SVG line chart
+    const width = 600;
+    const height = 300;
+    const padding = 50;
+    
+    const maxValue = Math.max(...salesData, ...profitData);
+    const scaleX = (width - 2 * padding) / (months.length - 1 || 1);
+    const scaleY = (height - 2 * padding) / maxValue;
+    
+    let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+    
+    // Draw grid lines
+    for (let i = 0; i <= 5; i++) {
+        const y = height - padding - (i * (height - 2 * padding) / 5);
+        svg += `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="#e0e0e0" stroke-width="1"/>`;
+        svg += `<text x="${padding - 10}" y="${y + 5}" fill="#666" text-anchor="end" font-size="12">${Math.round(maxValue * i / 5 / 1000)}K</text>`;
     }
     
-    charts.lineChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: months.map(m => formatMonth(m)),
-            datasets: [
-                {
-                    label: 'Sales',
-                    data: salesData,
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 5,
-                    pointHoverRadius: 7
-                },
-                {
-                    label: 'Profit',
-                    data: profitData,
-                    borderColor: '#28a745',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 5,
-                    pointHoverRadius: 7
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 12,
-                    titleFont: { size: 14, weight: 'bold' },
-                    bodyFont: { size: 13 },
-                    callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return '$' + (value / 1000) + 'K';
-                        }
-                    }
-                }
-            },
-            onClick: (event, elements) => {
-                if (elements.length > 0) {
-                    const index = elements[0].index;
-                    const month = months[index];
-                    drillDownByMonth(month);
-                }
-            }
+    // Draw sales line
+    let salesPath = `M `;
+    months.forEach((month, i) => {
+        const x = padding + i * scaleX;
+        const y = height - padding - salesData[i] * scaleY;
+        salesPath += `${x},${y} `;
+    });
+    svg += `<path d="${salesPath}" fill="none" stroke="#667eea" stroke-width="3"/>`;
+    
+    // Draw sales points
+    months.forEach((month, i) => {
+        const x = padding + i * scaleX;
+        const y = height - padding - salesData[i] * scaleY;
+        svg += `<circle cx="${x}" cy="${y}" r="5" fill="#667eea" class="chart-point" data-label="${formatMonth(month)}: ${formatCurrency(salesData[i])}" onclick="drillDownByMonth('${month}')"/>`;
+    });
+    
+    // Draw profit line
+    let profitPath = `M `;
+    months.forEach((month, i) => {
+        const x = padding + i * scaleX;
+        const y = height - padding - profitData[i] * scaleY;
+        profitPath += `${x},${y} `;
+    });
+    svg += `<path d="${profitPath}" fill="none" stroke="#28a745" stroke-width="3"/>`;
+    
+    // Draw profit points
+    months.forEach((month, i) => {
+        const x = padding + i * scaleX;
+        const y = height - padding - profitData[i] * scaleY;
+        svg += `<circle cx="${x}" cy="${y}" r="5" fill="#28a745" class="chart-point" data-label="${formatMonth(month)}: ${formatCurrency(profitData[i])}" onclick="drillDownByMonth('${month}')"/>`;
+    });
+    
+    // Draw x-axis labels
+    months.forEach((month, i) => {
+        const x = padding + i * scaleX;
+        if (i % Math.ceil(months.length / 6) === 0) {
+            svg += `<text x="${x}" y="${height - padding + 20}" fill="#666" text-anchor="middle" font-size="11">${formatMonth(month)}</text>`;
         }
     });
+    
+    // Legend
+    svg += `<rect x="${width - 150}" y="20" width="15" height="3" fill="#667eea"/>`;
+    svg += `<text x="${width - 130}" y="25" fill="#333" font-size="12">Sales</text>`;
+    svg += `<rect x="${width - 150}" y="35" width="15" height="3" fill="#28a745"/>`;
+    svg += `<text x="${width - 130}" y="40" fill="#333" font-size="12">Profit</text>`;
+    
+    svg += '</svg>';
+    
+    container.innerHTML = svg;
+    
+    // Add tooltips
+    addTooltips(container);
 }
 
 // Update bar chart - Sales by category
 function updateBarChart() {
-    const ctx = document.getElementById('barChart').getContext('2d');
+    const container = document.getElementById('barChart');
     
     // Group data by category
     const categoryData = {};
@@ -269,74 +264,41 @@ function updateBarChart() {
     
     const categories = Object.keys(categoryData);
     const salesData = categories.map(c => categoryData[c].sales);
-    const profitData = categories.map(c => categoryData[c].profit);
     
-    if (charts.barChart) {
-        charts.barChart.destroy();
+    // Create SVG bar chart
+    const width = 600;
+    const height = 300;
+    const padding = 60;
+    const barWidth = (width - 2 * padding) / categories.length / 2.5;
+    
+    const maxValue = Math.max(...salesData);
+    const scaleY = (height - 2 * padding) / maxValue;
+    
+    let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+    
+    // Draw grid lines
+    for (let i = 0; i <= 5; i++) {
+        const y = height - padding - (i * (height - 2 * padding) / 5);
+        svg += `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="#e0e0e0" stroke-width="1"/>`;
+        svg += `<text x="${padding - 10}" y="${y + 5}" fill="#666" text-anchor="end" font-size="12">${Math.round(maxValue * i / 5 / 1000)}K</text>`;
     }
     
-    charts.barChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: categories,
-            datasets: [
-                {
-                    label: 'Sales',
-                    data: salesData,
-                    backgroundColor: '#667eea',
-                    borderRadius: 8
-                },
-                {
-                    label: 'Profit',
-                    data: profitData,
-                    backgroundColor: '#28a745',
-                    borderRadius: 8
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 12,
-                    titleFont: { size: 14, weight: 'bold' },
-                    bodyFont: { size: 13 },
-                    callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return '$' + (value / 1000) + 'K';
-                        }
-                    }
-                }
-            },
-            onClick: (event, elements) => {
-                if (elements.length > 0) {
-                    const index = elements[0].index;
-                    const category = categories[index];
-                    drillDownByCategory(category);
-                }
-            }
-        }
+    // Draw bars
+    categories.forEach((category, i) => {
+        const x = padding + (i * (width - 2 * padding) / categories.length) + 10;
+        const barHeight = salesData[i] * scaleY;
+        const y = height - padding - barHeight;
+        
+        svg += `<rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" fill="#667eea" rx="5" class="chart-bar" data-label="${category}: ${formatCurrency(salesData[i])}" onclick="drillDownByCategory('${category}')"/>`;
+        svg += `<text x="${x + barWidth / 2}" y="${height - padding + 20}" fill="#666" text-anchor="middle" font-size="11">${category}</text>`;
     });
+    
+    svg += '</svg>';
+    
+    container.innerHTML = svg;
+    
+    // Add tooltips
+    addTooltips(container);
 }
 
 // Update heat map - Regional performance
@@ -382,7 +344,7 @@ function updateHeatMap() {
 
 // Update product chart - Top products by profit
 function updateProductChart() {
-    const ctx = document.getElementById('productChart').getContext('2d');
+    const container = document.getElementById('productChart');
     
     // Group data by product
     const productData = {};
@@ -400,50 +362,90 @@ function updateProductChart() {
         .slice(0, 5);
     const profitData = products.map(p => productData[p].profit);
     
-    if (charts.productChart) {
-        charts.productChart.destroy();
-    }
+    // Create SVG donut chart
+    const width = 400;
+    const height = 300;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = 80;
+    const innerRadius = 45;
     
-    charts.productChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: products,
-            datasets: [{
-                data: profitData,
-                backgroundColor: [
-                    '#667eea',
-                    '#764ba2',
-                    '#28a745',
-                    '#fbc02d',
-                    '#f57c00'
-                ],
-                borderWidth: 2,
-                borderColor: 'white'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 12,
-                    titleFont: { size: 14, weight: 'bold' },
-                    bodyFont: { size: 13 },
-                    callbacks: {
-                        label: function(context) {
-                            const profit = context.parsed;
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const percentage = ((profit / total) * 100).toFixed(1);
-                            return context.label + ': ' + formatCurrency(profit) + ' (' + percentage + '%)';
-                        }
-                    }
-                }
+    const total = profitData.reduce((a, b) => a + b, 0);
+    const colors = ['#667eea', '#764ba2', '#28a745', '#fbc02d', '#f57c00'];
+    
+    let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+    
+    let currentAngle = -90;
+    products.forEach((product, i) => {
+        const percentage = profitData[i] / total;
+        const angle = percentage * 360;
+        const endAngle = currentAngle + angle;
+        
+        const x1 = centerX + radius * Math.cos(currentAngle * Math.PI / 180);
+        const y1 = centerY + radius * Math.sin(currentAngle * Math.PI / 180);
+        const x2 = centerX + radius * Math.cos(endAngle * Math.PI / 180);
+        const y2 = centerY + radius * Math.sin(endAngle * Math.PI / 180);
+        
+        const x3 = centerX + innerRadius * Math.cos(endAngle * Math.PI / 180);
+        const y3 = centerY + innerRadius * Math.sin(endAngle * Math.PI / 180);
+        const x4 = centerX + innerRadius * Math.cos(currentAngle * Math.PI / 180);
+        const y4 = centerY + innerRadius * Math.sin(currentAngle * Math.PI / 180);
+        
+        const largeArc = angle > 180 ? 1 : 0;
+        
+        const pathData = `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${x4} ${y4} Z`;
+        
+        svg += `<path d="${pathData}" fill="${colors[i]}" class="chart-segment" data-label="${product}: ${formatCurrency(profitData[i])} (${(percentage * 100).toFixed(1)}%)"/>`;
+        
+        currentAngle = endAngle;
+    });
+    
+    // Legend
+    products.forEach((product, i) => {
+        const y = 30 + i * 25;
+        svg += `<rect x="10" y="${y}" width="15" height="15" fill="${colors[i]}"/>`;
+        svg += `<text x="30" y="${y + 12}" fill="#333" font-size="12">${product}</text>`;
+    });
+    
+    svg += '</svg>';
+    
+    container.innerHTML = svg;
+    
+    // Add tooltips
+    addTooltips(container);
+}
+
+// Add tooltip functionality
+function addTooltips(container) {
+    const elements = container.querySelectorAll('[data-label]');
+    elements.forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('mouseenter', function(e) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'chart-tooltip';
+            tooltip.textContent = this.getAttribute('data-label');
+            tooltip.style.position = 'absolute';
+            tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            tooltip.style.color = 'white';
+            tooltip.style.padding = '8px 12px';
+            tooltip.style.borderRadius = '5px';
+            tooltip.style.fontSize = '13px';
+            tooltip.style.pointerEvents = 'none';
+            tooltip.style.zIndex = '1000';
+            document.body.appendChild(tooltip);
+            
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+            
+            this._tooltip = tooltip;
+        });
+        el.addEventListener('mouseleave', function() {
+            if (this._tooltip) {
+                this._tooltip.remove();
+                this._tooltip = null;
             }
-        }
+        });
     });
 }
 
