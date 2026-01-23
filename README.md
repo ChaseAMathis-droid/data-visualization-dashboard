@@ -8,7 +8,7 @@ A modern, web-based interactive dashboard for visualizing complex datasets with 
 - **Line Chart**: Sales and profit trends over time with month-by-month breakdown
 - **Bar Chart**: Category-wise sales and profit comparison
 - **Heat Map**: Regional performance visualization with color-coded intensity
-- **Doughnut Chart**: Top 5 products by profit distribution
+- **Donut Chart**: Top 5 products by profit distribution
 - **KPI Cards**: Real-time metrics with trend indicators
 
 ### 🎯 Interactive Features
@@ -149,9 +149,8 @@ const customMetric = filteredData.reduce((sum, item) => {
 
 - **HTML5**: Structure and semantic markup
 - **CSS3**: Modern styling with Grid and Flexbox
-- **JavaScript (ES6+)**: Interactive functionality
-- **Chart.js**: Bar, line, and doughnut charts
-- **D3.js**: Data manipulation and calculations
+- **JavaScript (ES6+)**: Interactive functionality and data manipulation
+- **SVG**: Custom charts rendered with native SVG (no external dependencies)
 - **CSV Parsing**: Built-in CSV data loading
 
 ## 📈 Key Metrics & KPIs
